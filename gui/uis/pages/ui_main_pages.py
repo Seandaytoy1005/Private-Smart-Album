@@ -169,6 +169,9 @@ class Ui_MainPages(object):
         self.page_2_layout.setContentsMargins(5, 5, 5, 5)
         self.pages.addWidget(self.page_2)
         
+        #在这里
+        
+        
         self.page_6 = QWidget()
         self.page_6.setObjectName(u"page_6")
         self.page_6.setStyleSheet(u"QFrame {\n"
@@ -177,11 +180,22 @@ class Ui_MainPages(object):
         self.page_6_layout = QVBoxLayout(self.page_6)
         self.page_6_layout.setObjectName(u"page_6_layout")
         self.scrollArea_4= QScrollArea(self.page_6)
-        self.scrollArea_4.setObjectName(u"scrollArea")
+        self.scrollArea_4.setObjectName(u"scrollArea_4")
         self.scrollArea_4.setStyleSheet(u"background: transparent;")
         self.scrollArea_4.setFrameShape(QFrame.NoFrame)
         self.scrollArea_4.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.scrollArea_4.setWidgetResizable(True)
+        self.scrollAreaWidgetContents1 = QWidget()
+        self.scrollAreaWidgetContents1.setObjectName(u"scrollAreaWidgetContents1")
+        self.scrollAreaWidgetContents1.setGeometry(QRect(0, 0, 100, 30))
+        self.scrollAreaWidgetContents1.setStyleSheet(u"background: transparent;")
+        self.scrollArea_4.setWidget(self.scrollAreaWidgetContents1)
+        self.gridLayout_3 = QGridLayout(self.scrollAreaWidgetContents1)
+        self.gridLayout_3.setSpacing(0)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.page_6_layout.addWidget(self.scrollArea_4)
+        self.pages.addWidget(self.page_6)
         
         self.page_3 = QWidget()
         self.page_3.setObjectName(u"page_3")
@@ -207,10 +221,10 @@ class Ui_MainPages(object):
         self.scrollArea_1.setWidget(self.scrollAreaWidgetContents)
 
         self.page_3_layout.addWidget(self.scrollArea_1)
-        self.page_6_layout.addWidget(self.scrollArea_4)
+        
 
         self.pages.addWidget(self.page_3)
-        self.pages.addWidget(self.page_6)
+        
         ############################################################################
         self.page_4 = QWidget()
         self.page_4.setObjectName(u"page_4")

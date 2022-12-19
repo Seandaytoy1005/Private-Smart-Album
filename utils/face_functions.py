@@ -13,12 +13,18 @@ from utils.sort_images import image_sorter
 from imagededup.methods import PHash
 from utils.classify import classify
 
+def sorter_main1(image_paths):
+    t0 = time.time()
+    if embedder(image_paths):
+        sort_images()
+        print(time.time()-t0)
+
 def sorter_main(image_paths):
     t0 = time.time()
-    model='models\model.pkl'
+    model='Models\model.pkl'
     groups = {}
     groups=classify(model,image_paths)
-    write_json(groups)
+    write_json1(groups)
     print(time.time()-t0)
         #persons = get_persons('output.json')
         #persons = get_persons_more(persons)

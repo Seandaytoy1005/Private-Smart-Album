@@ -2,7 +2,7 @@
 cd /d %~dp0
 cd /d %~dp0\resources
 call conda env create -f environment.yml
-call conda activate Picf
+call conda activate Xml
 pip install git+https://github.com/openai/CLIP.git
 pip install --upgrade pillow
 cd /d %~dp0\imagededup

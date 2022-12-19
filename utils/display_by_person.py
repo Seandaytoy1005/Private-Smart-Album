@@ -14,7 +14,7 @@ def sort_by_person(images):
     persons = {}
     for image in images:
         path = image['pic_name']
-        name = image['person']
+        name = image['group']
         if name not in persons:
             persons[name] = []
         persons[name].append(path)
@@ -46,11 +46,25 @@ def write_json(persons):
             image_dic = {}
             image_dic['pic_name'] = os.path.basename(path)
             #print(image_dic['pic_name'])
-            image_dic['person'] = name
+            image_dic['group'] = name
             images.append(image_dic)
-    images.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.findall(r'\D+|\d+', x['person'])])
+    images.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.findall(r'\D+|\d+', x['group'])])
     with open('output.json','w',encoding='utf-8') as f:
         f.write(json.dumps(images,indent=4,ensure_ascii=False,sort_keys=True))
+
+def write_json1(persons):
+    #输入{name:[paths]}形式的字典，以[{"person":name,"pic_name":path}]的形式写入output.json中
+    images = []
+    for name, paths in persons.items():
+        for path in paths:
+            image_dic = {}
+            image_dic['pic_name'] = os.path.basename(path)
+            #print(image_dic['pic_name'])
+            image_dic['group'] = name
+            images.append(image_dic)
+    images.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.findall(r'\D+|\d+', x['group'])])
+    with open('output1.json','w',encoding='utf-8') as f:
+        f.write(json.dumps(images,indent=4,ensure_ascii=False,sort_keys=True))        
 
 def print_by_person(persons):
     #将{name:[paths]}形式的字典按"人名:图片组"的形式格式化输出

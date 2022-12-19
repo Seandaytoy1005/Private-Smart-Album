@@ -90,14 +90,14 @@ class MainWindow(QMainWindow):
         if btn.objectName() == 'btn_page_pics':
             self.ui.left_menu.select_only_one(btn.objectName())
             try:
-                self.ui.load_pages.gridLayout_2.itemAt(0).widget().setParent(None)
-                self.ui.load_pages.gridLayout_2.removeWidget(self.ui.load_pages.gridLayout_2.itemAt(0).widget())
+                self.ui.load_pages.gridLayout_3.itemAt(0).widget().setParent(None)
+                self.ui.load_pages.gridLayout_3.removeWidget(self.ui.load_pages.gridLayout_3.itemAt(0).widget())
             except AttributeError:
                 pass
             if not MainFunctions.left_column_is_visible(self):
                 MainFunctions.toggle_left_column(self)
             MainFunctions.set_page(self, self.ui.load_pages.page_6)
-            MainFunctions.load_persons(self)
+            MainFunctions.load_persons1(self)
             MainFunctions.update_image_count(self,0)
             
         # OPEN PAGE pics1   

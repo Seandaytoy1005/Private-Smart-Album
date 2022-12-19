@@ -24,7 +24,7 @@ from multiprocessing import Pool, cpu_count, Manager
 from math import ceil
 from utils.facenet import compute_embedding
 from tensorflow.keras.models import load_model
-from utils.display_by_person import load_json,get_persons,write_json
+from utils.display_by_person import load_json,get_persons,write_json,write_json1
 from utils.display_by_group import load_json,get_groups,write_json
 global global_counter
 global_counter = 0

@@ -21,7 +21,7 @@ from typing import Set
 from search_image_by_text.search_images_by_text import search_images_by_text
 
 from . functions_main_window import *
-from utils.face_functions import get_duplicate_pics, search_person_pics, sorter_main
+from utils.face_functions import get_duplicate_pics, search_person_pics, sorter_main, sorter_main1
 from utils.embedder import differ_paths, get_image_paths
 from tensorflow.keras.models import load_model
 import utils.embedder as EMBEDDER
@@ -78,16 +78,16 @@ class SetupMainWindow:
         {
             "btn_icon": "icon_folder_open.svg",
             "btn_id": "btn_page_pics1",
-            "btn_text": "分类结果",
-            "btn_tooltip": "分类结果",
+            "btn_text": "人脸分类结果",
+            "btn_tooltip": "人脸分类结果",
             "show_top": True,
             "is_active": False
         },
         {
             "btn_icon": "icon_folder_open.svg",
             "btn_id": "btn_page_pics",
-            "btn_text": "人脸分类结果",
-            "btn_tooltip": "人脸分类结果",
+            "btn_text": "分类结果",
+            "btn_tooltip": "分类结果",
             "show_top": True,
             "is_active": False
         },
@@ -259,7 +259,51 @@ class SetupMainWindow:
         self.func_btn_13.setMinimumWidth(200)
         self.func_btn_13.setMinimumHeight(40)
         #只制作了一个控件没有事件，要加东西??
-        
+        def detect_finished1():
+            self.timer.stop()
+            self.ui.credits.copyright_label.setText("完成识别，耗时 {} 秒".format(self.timer_count))
+            QMessageBox.information(self, "Picf", "完成识别")
+        def detect_print_time1():
+            try:
+                processed_image = EMBEDDER.global_counter.value
+            except AttributeError:
+                processed_image = 0
+            self.timer_count = int(time.time() - self.t0)
+            if processed_image == 0:
+                self.ui.credits.copyright_label.setText("正在加载模型，已开始 {} 秒".format(self.timer_count))
+                #print("正在加载模型，已开始 {} 秒".format(self.timer_count))
+            elif processed_image == self.total_image:
+                self.ui.credits.copyright_label.setText("识别完成，正在分类，已开始 {} 秒".format(self.timer_count))
+            else:
+                self.ui.credits.copyright_label.setText("正在识别中，{}/{}，已开始 {} 秒".format(processed_image, self.total_image, self.timer_count))
+                #print("正在识别中，{}/{}，已识别 {} 秒".format(processed_image, self.total_image, self.timer_count))
+
+        def create_detect_worker1():
+            if self.settings['image_path'] == '':
+                QMessageBox.information(self, "Picf", "还未选择图片文件夹，请先选择文件夹后再开始识别")
+                return None
+
+            self.t0 = time.time()
+            self.timer_count = 0
+            self.timer = QTimer()
+            self.timer.timeout.connect(lambda: detect_print_time1())
+            self.timer.start(100)
+
+            image_paths = get_image_paths(self.settings['image_path'])
+            image_paths = differ_paths(image_paths, self.settings['image_path'])
+            self.total_image = len(image_paths)
+            if self.total_image== 0:
+                self.ui.credits.copyright_label.setText("共有 0 张新增图片，识别取消")
+                return None
+
+            #print("Found {} images..".format(self.total_image))
+
+            self.worker_detect1 = Worker('facenet', image_paths)
+            self.worker_detect1.start()
+            self.worker_detect1.finished.connect(detect_finished1)
+
+        self.worker_detect1 = Worker('facenet')
+        self.func_btn_13.clicked.connect(lambda: create_detect_worker1())
         
         #################################################################
         # 识别分类
@@ -528,6 +572,9 @@ class Worker(QThread):
     def run(self):
         if self.mode == "Detect":
             sorter_main(self.path)
+            self.finished.emit({})
+        elif self.mode == "facenet":
+            sorter_main1(self.path)
             self.finished.emit({})
         elif self.mode == "Search":
 

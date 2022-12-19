@@ -22,7 +22,7 @@ def image_sorter(G):
     #将分类信息格式化，方便检测是否已有分类信息，以{path:name}的形式保存到existed_images_dic中
     existed_images_dic = {}
     for existed_image in existed_images:
-        name = existed_image["person"]
+        name = existed_image["group"]
         path = existed_image["pic_name"]
         existed_images_dic[path] = name
 
@@ -68,7 +68,7 @@ def image_sorter(G):
         # 将image_to_edit中的每一张图片打上max_tag的标签，以{"name":max_tag,"pic_name":path}的形式合并到existed_images中
         for path in image_to_edit:
             temp_dic = {}
-            temp_dic["person"] = max_tag
+            temp_dic["group"] = max_tag
             temp_dic["pic_name"] = path
             existed_images.append(temp_dic)
 
@@ -111,7 +111,7 @@ def sort_images():
 
     # Sort the images using the clusters
     images = image_sorter(graph)
-    images.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.findall(r'\D+|\d+', x['person'])])
+    images.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.findall(r'\D+|\d+', x['group'])])
     with open('output.json','w',encoding='utf-8') as f:
         f.write(json.dumps(images,indent=4,ensure_ascii=False, sort_keys=True))
 

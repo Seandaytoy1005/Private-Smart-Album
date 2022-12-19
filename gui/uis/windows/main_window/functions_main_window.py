@@ -195,6 +195,50 @@ class MainFunctions():
 
         self.ui.left_column.menus.verticalLayout.addWidget(self.temp_widget)
         self.image_dic = {}
+    
+    def load_persons1(self):
+        self.persons = get_persons('output1.json')
+
+        #保证未命名分类始终位于底部
+        if '未命名' in self.persons:
+            unnamed = self.persons.pop('未命名')
+            self.persons['未命名'] = unnamed
+        
+        self.temp_widget = QWidget()
+        self.person_group = QButtonGroup()
+        self.btn_boxes_layout = QVBoxLayout(self.temp_widget)
+        for name, paths in self.persons.items():
+            #print(paths)
+            #print("PK")
+            btn = PyPushButton(
+                text=name,
+                radius = 5,
+                color = self.themes["app_color"]["white"],
+                bg_color =  self.themes["app_color"]["dark_one"],
+                bg_color_hover = self.themes['app_color']['orange'],
+                bg_color_pressed = self.themes['app_color']['orange']
+            )
+            btn.setMinimumHeight(25)
+            btn.setMaximumHeight(25)
+            self.btn_boxes_layout.addWidget(btn)
+            btn.paths = paths
+            btn.clicked.connect(lambda: MainFunctions.load_images_by_person1(self))
+            btn.DoubleClickSig.connect(lambda: MainFunctions.exec_edit_group_name(self))
+            btn.setObjectName("Person")
+            btn.setCheckable(True)
+            self.person_group.addButton(btn)
+        self.btn_boxes_layout.addStretch()
+        self.btn_boxes_layout.setSpacing(10)
+        try:
+            if self.ui.left_column.menus.verticalLayout.count() > 0:
+                self.ui.left_column.menus.verticalLayout.itemAt(0).widget().setParent(None)
+                self.ui.left_column.menus.verticalLayout.removeWidget(self.ui.left_column.menus.verticalLayout.itemAt(0).widget())
+                self.ui.left_column.menus.verticalLayout.update()
+        except AttributeError:
+            pass
+
+        self.ui.left_column.menus.verticalLayout.addWidget(self.temp_widget)
+        self.image_dic = {}
 
     def load_images_by_person(self):
         self.ui.credits.copyright_label.setText("正在加载图片，请稍后")
@@ -214,6 +258,25 @@ class MainFunctions():
         self.ui.credits.person_name.setText(btn.text())
         QApplication.processEvents()
         #MainFunctions.load_images(self, btn.paths)
+        
+    def load_images_by_person1(self):
+        self.ui.credits.copyright_label.setText("正在加载图片，请稍后")
+        self.ui.credits.person.setText("")
+        self.ui.credits.person_name.setText("")
+        self.ui.credits.person_name.setFocusPolicy(Qt.WheelFocus)
+        self.ui.credits.person_name.setReadOnly(False)
+        self.ui.credits.image.setText("")
+        self.ui.credits.image_title.setText("")
+        self.ui.credits.update()
+        QApplication.processEvents()
+        #print(btn.text())
+        #print(btn.paths)
+        btn = self.person_group.checkedButton()
+        MainFunctions.load_image_page1(self,name=btn.text(), paths=btn.paths)
+        MainFunctions.update_image_count(self, len(btn.paths))
+        self.ui.credits.person_name.setText(btn.text())
+        QApplication.processEvents()
+        #MainFunctions.load_images(self, btn.paths)
 
     def load_image_page(self, name, paths):
         try:
@@ -229,7 +292,21 @@ class MainFunctions():
         #self.image_dic[name].setParent(self.ui.load_pages.gridLayout_2)
         self.ui.load_pages.gridLayout_2.addWidget(self.image_dic[name])
         #self.ui.load_pages.scrollArea_1.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-
+    
+    def load_image_page1(self, name, paths):
+        try:
+            self.ui.load_pages.gridLayout_3.itemAt(0).widget().setParent(None)
+            self.ui.load_pages.gridLayout_3.removeWidget(self.ui.load_pages.gridLayout_3.itemAt(0).widget())
+        except AttributeError:
+            pass
+        image_page = PyImagePage()
+        if name not in self.image_dic:
+            self.image_dic[name] = image_page
+            MainFunctions.load_images1(self, paths, image_page)
+            QApplication.processEvents()
+        #self.image_dic[name].setParent(self.ui.load_pages.gridLayout_2)
+        self.ui.load_pages.gridLayout_3.addWidget(self.image_dic[name])
+    
     def load_images(self, paths, image_page):
         for count, path in enumerate(paths):
             path = os.path.normpath(os.path.join(self.settings['image_path'], path))
@@ -244,7 +321,19 @@ class MainFunctions():
             QApplication.processEvents()
         #print(image_page.flow_layout_boxs)
 
-
+    def load_images1(self, paths, image_page):
+        for count, path in enumerate(paths):
+            path = os.path.normpath(os.path.join(self.settings['image_path'], path))
+            image_box = PyImage(path)
+            #image_page.button_box.setAutoExclusive(False)
+            image_box.checkbox.stateChanged.connect(lambda: MainFunctions.get_checked_button(self, image_page))
+            image_page.flow_layout_boxs.append(image_box)
+            image_page.flow_layout.addWidget(image_box)
+            image_page.button_box.addButton(image_box.checkbox)
+            image_page.flow_layout.update()
+            self.ui.load_pages.gridLayout_3.update()
+            QApplication.processEvents()
+    
     def update_image_count(self, count):
         self.ui.credits.copyright_label.setText("总数量：{}".format(str(count)))
         self.ui.credits.person.setText("人物名：")
