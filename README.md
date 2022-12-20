@@ -7,6 +7,7 @@ we have made an application named `XML` to help people classify pictures, recogn
 # Installation steps:
 * Install Anaconda (skip this step if you have one)<br>
 * Run setup.bat(setup.bat is mainly used to automatically create the conda environment, install dependent packages, and complete the compilation of the imagededup package.)
+* * Download the face classification model file from the URL below and place it in the root directory https://drive.google.com/drive/folders/1WXScdp5LAIfQYFWRSYmzkQQkJk6qdeph?usp=share_link
 # Instructions:
     conda activate Xml
     python main.py
