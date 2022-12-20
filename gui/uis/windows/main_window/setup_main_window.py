@@ -70,40 +70,40 @@ class SetupMainWindow:
         {
             "btn_icon" : "icon_home.svg",
             "btn_id" : "btn_home",
-            "btn_text" : "首页",
-            "btn_tooltip" : "首页",
+            "btn_text" : "Front page",
+            "btn_tooltip" : "Front page",
             "show_top" : True,
             "is_active" : True
         },
         {
             "btn_icon": "icon_folder_open.svg",
             "btn_id": "btn_page_pics1",
-            "btn_text": "人脸分类结果",
-            "btn_tooltip": "人脸分类结果",
+            "btn_text": "Face Classification Results",
+            "btn_tooltip": "Face Classification Results",
             "show_top": True,
             "is_active": False
         },
         {
             "btn_icon": "icon_folder_open.svg",
             "btn_id": "btn_page_pics",
-            "btn_text": "分类结果",
-            "btn_tooltip": "分类结果",
+            "btn_text": "Classification result",
+            "btn_tooltip": "Classification result",
             "show_top": True,
             "is_active": False
         },
         {
             "btn_icon": "icon_search.svg",
             "btn_id": "btn_page_search",
-            "btn_text": "搜索结果",
-            "btn_tooltip": "搜索结果",
+            "btn_text": "Search results",
+            "btn_tooltip": "Search results",
             "show_top": True,
             "is_active": False
         },
         {
             "btn_icon": "icon_signal.svg",
             "btn_id": "btn_page_duplicate",
-            "btn_text": "筛重结果",
-            "btn_tooltip": "筛重结果",
+            "btn_text": "Plagiarism report",
+            "btn_tooltip": "Plagiarism report",
             "show_top": True,
             "is_active": False
         }
@@ -186,7 +186,7 @@ class SetupMainWindow:
         MainFunctions.set_left_column_menu(
             self,
             menu = self.ui.left_column.menus.menu_1,
-            title = "结果",
+            title = "Result",
             icon_path = Functions.set_svg_icon("icon_settings.svg")
         )
         MainFunctions.set_right_column_menu(self, self.ui.right_column.menu_1)
@@ -232,7 +232,7 @@ class SetupMainWindow:
         #################################################################
         # 选择文件夹
         self.func_btn_11 = PyPushButton(
-            text = '选择文件夹',
+            text = 'Select folder',
             radius = 8,
             color = self.themes['app_color']['white'],
             bg_color = self.themes['app_color']['dark_one'],
@@ -248,7 +248,7 @@ class SetupMainWindow:
         #################################################################
         # 人脸分类
         self.func_btn_13 = PyPushButton(
-            text = '人脸分类',
+            text = 'Face classification',
             radius = 8,
             color = self.themes['app_color']['white'],
             bg_color = self.themes['app_color']['dark_one'],
@@ -261,8 +261,8 @@ class SetupMainWindow:
         #只制作了一个控件没有事件，要加东西??
         def detect_finished1():
             self.timer.stop()
-            self.ui.credits.copyright_label.setText("完成识别，耗时 {} 秒".format(self.timer_count))
-            QMessageBox.information(self, "Picf", "完成识别")
+            self.ui.credits.copyright_label.setText("Finish，tskes {} s".format(self.timer_count))
+            QMessageBox.information(self, "Xml", "Finish")
         def detect_print_time1():
             try:
                 processed_image = EMBEDDER.global_counter.value
@@ -270,17 +270,17 @@ class SetupMainWindow:
                 processed_image = 0
             self.timer_count = int(time.time() - self.t0)
             if processed_image == 0:
-                self.ui.credits.copyright_label.setText("正在加载模型，已开始 {} 秒".format(self.timer_count))
+                self.ui.credits.copyright_label.setText("loading model， {} s".format(self.timer_count))
                 #print("正在加载模型，已开始 {} 秒".format(self.timer_count))
             elif processed_image == self.total_image:
-                self.ui.credits.copyright_label.setText("识别完成，正在分类，已开始 {} 秒".format(self.timer_count))
+                self.ui.credits.copyright_label.setText("sorting，{} s".format(self.timer_count))
             else:
-                self.ui.credits.copyright_label.setText("正在识别中，{}/{}，已开始 {} 秒".format(processed_image, self.total_image, self.timer_count))
+                self.ui.credits.copyright_label.setText("identifying，{}/{}， {} s".format(processed_image, self.total_image, self.timer_count))
                 #print("正在识别中，{}/{}，已识别 {} 秒".format(processed_image, self.total_image, self.timer_count))
 
         def create_detect_worker1():
             if self.settings['image_path'] == '':
-                QMessageBox.information(self, "Picf", "还未选择图片文件夹，请先选择文件夹后再开始识别")
+                QMessageBox.information(self, "Xml", "No picture folder selected yet")
                 return None
 
             self.t0 = time.time()
@@ -293,7 +293,7 @@ class SetupMainWindow:
             image_paths = differ_paths(image_paths, self.settings['image_path'])
             self.total_image = len(image_paths)
             if self.total_image== 0:
-                self.ui.credits.copyright_label.setText("共有 0 张新增图片，识别取消")
+                self.ui.credits.copyright_label.setText("A total of 0 new pictures were added, and the identification was canceled")
                 return None
 
             #print("Found {} images..".format(self.total_image))
@@ -308,7 +308,7 @@ class SetupMainWindow:
         #################################################################
         # 识别分类
         self.func_btn_12 = PyPushButton(
-            text = '开始分类',
+            text = 'Photo classification',
             radius = 8,
             color = self.themes['app_color']['white'],
             bg_color = self.themes['app_color']['dark_one'],
@@ -321,8 +321,8 @@ class SetupMainWindow:
 
         def detect_finished():
             self.timer.stop()
-            self.ui.credits.copyright_label.setText("完成识别，耗时 {} 秒".format(self.timer_count))
-            QMessageBox.information(self, "Picf", "完成识别")
+            self.ui.credits.copyright_label.setText("Finish， {} s".format(self.timer_count))
+            QMessageBox.information(self, "Xml", "Finish")
         def detect_print_time():
             try:
                 processed_image = EMBEDDER.global_counter.value
@@ -330,17 +330,17 @@ class SetupMainWindow:
                 processed_image = 0
             self.timer_count = int(time.time() - self.t0)
             if processed_image == 0:
-                self.ui.credits.copyright_label.setText("正在加载模型，已开始 {} 秒".format(self.timer_count))
+                self.ui.credits.copyright_label.setText("loading model， {} s".format(self.timer_count))
                 #print("正在加载模型，已开始 {} 秒".format(self.timer_count))
             elif processed_image == self.total_image:
-                self.ui.credits.copyright_label.setText("识别完成，正在分类，已开始 {} 秒".format(self.timer_count))
+                self.ui.credits.copyright_label.setText("sorting， {} s".format(self.timer_count))
             else:
-                self.ui.credits.copyright_label.setText("正在识别中，{}/{}，已开始 {} 秒".format(processed_image, self.total_image, self.timer_count))
+                self.ui.credits.copyright_label.setText("identifying，{}/{}， {} s".format(processed_image, self.total_image, self.timer_count))
                 #print("正在识别中，{}/{}，已识别 {} 秒".format(processed_image, self.total_image, self.timer_count))
 
         def create_detect_worker():
             if self.settings['image_path'] == '':
-                QMessageBox.information(self, "Picf", "还未选择图片文件夹，请先选择文件夹后再开始识别")
+                QMessageBox.information(self, "Xml", "No picture folder selected yet")
                 return None
 
             self.t0 = time.time()
@@ -353,7 +353,7 @@ class SetupMainWindow:
             image_paths = differ_paths(image_paths, self.settings['image_path'])
             self.total_image = len(image_paths)
             if self.total_image== 0:
-                self.ui.credits.copyright_label.setText("共有 0 张新增图片，识别取消")
+                self.ui.credits.copyright_label.setText("A total of 0 new pictures were added, and the identification was canceled")
                 return None
 
             #print("Found {} images..".format(self.total_image))
@@ -398,7 +398,7 @@ class SetupMainWindow:
 #         self.func_btn_21.clicked.connect(lambda: MainFunctions.select_single_image(self))
 
         self.func_btn_22 = PyPushButton(
-            text = '开始查找',
+            text = 'Start searching',
             radius = 8,
             color = self.themes['app_color']['white'],
             bg_color = self.themes['app_color']['dark_one'],
@@ -418,12 +418,12 @@ class SetupMainWindow:
         def search_finished(path):
             self.timer.stop()
             self.person_search_result = path
-            self.ui.credits.copyright_label.setText("搜索完成，耗时 {} 秒".format(self.timer_count))
-            QMessageBox.information(self, "Picf", "搜索完成")
+            self.ui.credits.copyright_label.setText("Finish，{} s".format(self.timer_count))
+            QMessageBox.information(self, "Xml", "Finish")
 
         def search_print_time():
             self.timer_count = int(time.time() - self.t0)
-            self.ui.credits.copyright_label.setText("正在搜索中，已开始 {} 秒".format(self.timer_count))
+            self.ui.credits.copyright_label.setText("searching， {} s".format(self.timer_count))
 
         def create_search_worker(path,text):
 
@@ -444,12 +444,12 @@ class SetupMainWindow:
                 self.worker_search.finished.connect(search_finished)
         def call_create_search_worker(photos_path):
             if self.func_btn_21.text()=='':
-                QMessageBox.information(self, "Picf", "还未输入查询文本")
+                QMessageBox.information(self, "Xml", "No query text has been entered")
             else:               
                 try:
                     create_search_worker(photos_path,self.func_btn_21.text())
                 except AttributeError:
-                    QMessageBox.information(self, "Picf", "还未输入查询文本")
+                    QMessageBox.information(self, "Xml", "No query text has been entered")
         self.search_changed = False
         self.has_searched = False
         self.func_btn_22.clicked.connect(lambda: call_create_search_worker(self.settings['image_path']))
@@ -457,7 +457,7 @@ class SetupMainWindow:
         ###################################################################
 
         self.func_btn_31 = PyPushButton(
-            text = '开始筛重',
+            text = 'Start checking',
             radius = 8,
             color = self.themes['app_color']['white'],
             bg_color = self.themes['app_color']['dark_one'],
@@ -481,15 +481,15 @@ class SetupMainWindow:
         self.func_btn_33.setMinimumHeight(40)
         def dedup_finished(path):
             self.timer.stop()
-            self.ui.credits.copyright_label.setText("筛查完成，耗时 {} 秒".format(self.timer_count))
+            self.ui.credits.copyright_label.setText("Finish， {} s".format(self.timer_count))
 
             self.person_duplicate_result = path
             self.image_pages = []
-            QMessageBox.information(self, "Picf", "完成筛查")
+            QMessageBox.information(self, "Xml", "Finish")
 
         def dedup_print_time():
             self.timer_count = int(time.time() - self.t0)
-            self.ui.credits.copyright_label.setText("正在筛查中，已开始 {} 秒".format(self.timer_count))
+            self.ui.credits.copyright_label.setText("Checking， {} s".format(self.timer_count))
             
         def create_duplicate_worker(path):
 

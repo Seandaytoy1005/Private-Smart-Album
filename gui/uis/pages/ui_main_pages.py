@@ -43,7 +43,7 @@ class Ui_MainPages(object):
         self.func_1_lable = QLabel()
         self.func_1_lable.setObjectName(u"func_1_lable")
         self.func_1_lable.setStyleSheet(u"background: transparent;")
-        self.func_1_lable.setText("分类")
+        self.func_1_lable.setText("Sorting")
         self.func_1_lable.setStyleSheet(u"font-family:Microsoft Yahei;font-size: 20pt;color:white")
         self.func_1_lable.setAlignment(Qt.AlignCenter)
 
@@ -83,7 +83,7 @@ class Ui_MainPages(object):
         self.func_2_lable = QLabel()
         self.func_2_lable.setObjectName(u"func_2_lable")
         self.func_2_lable.setStyleSheet(u"background: transparent;")
-        self.func_2_lable.setText("自然语言搜索")
+        self.func_2_lable.setText("Natural language search")
         self.func_2_lable.setStyleSheet(u"font-family:Microsoft Yahei;font-size: 20pt;color:white")
         self.func_2_lable.setAlignment(Qt.AlignCenter)
 
@@ -124,7 +124,7 @@ class Ui_MainPages(object):
         self.func_3_lable = QLabel()
         self.func_3_lable.setObjectName(u"func_3_lable")
         self.func_3_lable.setStyleSheet(u"background: transparent;")
-        self.func_3_lable.setText("筛查")
+        self.func_3_lable.setText("Duplicating")
         self.func_3_lable.setStyleSheet(u"font-family:Microsoft Yahei;font-size: 20pt;color:white")
         self.func_3_lable.setAlignment(Qt.AlignCenter)
 

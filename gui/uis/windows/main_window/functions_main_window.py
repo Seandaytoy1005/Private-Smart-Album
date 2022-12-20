@@ -156,9 +156,9 @@ class MainFunctions():
         self.persons = get_persons('output.json')
 
         #保证未命名分类始终位于底部
-        if '未命名' in self.persons:
-            unnamed = self.persons.pop('未命名')
-            self.persons['未命名'] = unnamed
+        if 'unnamed' in self.persons:
+            unnamed = self.persons.pop('unnamed')
+            self.persons['unnamed'] = unnamed
         
         self.temp_widget = QWidget()
         self.person_group = QButtonGroup()
@@ -200,9 +200,9 @@ class MainFunctions():
         self.persons = get_persons('output1.json')
 
         #保证未命名分类始终位于底部
-        if '未命名' in self.persons:
-            unnamed = self.persons.pop('未命名')
-            self.persons['未命名'] = unnamed
+        if 'unnamed' in self.persons:
+            unnamed = self.persons.pop('unnamed')
+            self.persons['unnamed'] = unnamed
         
         self.temp_widget = QWidget()
         self.person_group = QButtonGroup()
@@ -241,7 +241,7 @@ class MainFunctions():
         self.image_dic = {}
 
     def load_images_by_person(self):
-        self.ui.credits.copyright_label.setText("正在加载图片，请稍后")
+        self.ui.credits.copyright_label.setText("Loading images, please wait.....")
         self.ui.credits.person.setText("")
         self.ui.credits.person_name.setText("")
         self.ui.credits.person_name.setFocusPolicy(Qt.WheelFocus)
@@ -260,7 +260,7 @@ class MainFunctions():
         #MainFunctions.load_images(self, btn.paths)
         
     def load_images_by_person1(self):
-        self.ui.credits.copyright_label.setText("正在加载图片，请稍后")
+        self.ui.credits.copyright_label.setText("Loading images, please wait......")
         self.ui.credits.person.setText("")
         self.ui.credits.person_name.setText("")
         self.ui.credits.person_name.setFocusPolicy(Qt.WheelFocus)
@@ -335,12 +335,12 @@ class MainFunctions():
             QApplication.processEvents()
     
     def update_image_count(self, count):
-        self.ui.credits.copyright_label.setText("总数量：{}".format(str(count)))
-        self.ui.credits.person.setText("人物名：")
+        self.ui.credits.copyright_label.setText("The total amount：{}".format(str(count)))
+        self.ui.credits.person.setText("Character name：")
         self.ui.credits.person_name.setText("")
         self.ui.credits.person_name.setFocusPolicy(Qt.WheelFocus)
         self.ui.credits.person_name.setReadOnly(False)
-        self.ui.credits.image.setText("图片名：")
+        self.ui.credits.image.setText("Picture name：")
         self.ui.credits.image_title.setText("")
         self.ui.credits.update()
 
@@ -363,9 +363,9 @@ class MainFunctions():
         return self.flow_layout
 
     def select_single_image(self):
-        m = QFileDialog.getOpenFileName(None,"选取文件","./","图片 (*.png *.jpg *.jpeg *.tiff *.bmp);;")
+        m = QFileDialog.getOpenFileName(None,"Select file","./","picture (*.png *.jpg *.jpeg *.tiff *.bmp);;")
         self.selected_image = m[0]
-        self.ui.credits.copyright_label.setText("选择图片：{}".format(self.selected_image))
+        self.ui.credits.copyright_label.setText("Select Image：{}".format(self.selected_image))
         return m[0]
    
     def select_image_directory(self):
@@ -380,13 +380,13 @@ class MainFunctions():
             f.truncate()
             f.write(json.dumps(self.settings,indent=4,ensure_ascii=False))
         #print("Get Image Folder:{}".format(directory))
-        self.ui.credits.copyright_label.setText("选择文件夹zz：{}".format(directory))
+        self.ui.credits.copyright_label.setText("Select folder：{}".format(directory))
         #self.settings["image_path"] = directory
         return directory
     
     def load_search_result(self):
         if not self.has_searched:
-            self.ui.credits.copyright_label.setText("还未选择图片")
+            self.ui.credits.copyright_label.setText("No picture selected yet")
             self.ui.credits.person.setText("")
             self.ui.credits.person_name.setText("")
             self.ui.credits.person_name.setFocusPolicy(Qt.NoFocus)
@@ -396,12 +396,12 @@ class MainFunctions():
             return None
         else:
             name, paths = tuple(self.person_search_result.items())[0]
-            self.ui.credits.copyright_label.setText("总数量：{}".format(len(paths)))
-            self.ui.credits.person.setText("人物名：")
+            self.ui.credits.copyright_label.setText("The total amount：{}".format(len(paths)))
+            self.ui.credits.person.setText("Character name：")
             self.ui.credits.person_name.setText(name)
             self.ui.credits.person_name.setFocusPolicy(Qt.NoFocus)
             self.ui.credits.person_name.setReadOnly(True)
-            self.ui.credits.image.setText("图片名：")
+            self.ui.credits.image.setText("Picture name：")
             self.ui.credits.image_title.setText("")
         
         if not self.search_changed:
@@ -425,7 +425,7 @@ class MainFunctions():
         self.ui.load_pages.scrollArea_2.setWidget(self.scrollArea_2_WidgetContents)
         #self.scrollArea_2_layout.addStretch(50)
 
-        self.ui.credits.copyright_label.setText("正在加载图片")
+        self.ui.credits.copyright_label.setText("loading image....")
         self.ui.credits.person.setText("")
         self.ui.credits.person_name.setText("")
         self.ui.credits.person_name.setFocusPolicy(Qt.NoFocus)
@@ -446,7 +446,7 @@ class MainFunctions():
             self.search_target_lable = QLabel()
             self.search_target_lable.setObjectName(u"search_target_lable")
             self.search_target_lable.setStyleSheet(u"background: transparent;")
-            self.search_target_lable.setText("所选照片")
+            self.search_target_lable.setText("Selected photos")
             self.search_target_lable.setStyleSheet(u"font-family:Microsoft Yahei;font-size: 14pt")
             self.search_target_lable.setAlignment(Qt.AlignCenter)
             self.scrollArea_2_layout.addWidget(self.search_target_lable)
@@ -460,7 +460,7 @@ class MainFunctions():
         self.search_result_lable = QLabel()
         self.search_result_lable.setObjectName(u"search_result_lable")
         self.search_result_lable.setStyleSheet(u"background: transparent;")
-        self.search_result_lable.setText("搜索结果")
+        self.search_result_lable.setText("Search results")
         self.search_result_lable.setStyleSheet(u"font-family:Microsoft Yahei;font-size: 14pt")
         self.search_result_lable.setAlignment(Qt.AlignCenter)
         self.scrollArea_2_layout.addWidget(self.search_result_lable)
@@ -482,12 +482,12 @@ class MainFunctions():
                 image_page.flow_layout.update()
                 self.scrollArea_2_layout.update()
                 #QApplication.processEvents()
-            self.ui.credits.copyright_label.setText("总数量：{}".format(len(paths)))
-            self.ui.credits.person.setText("人物名：")
+            self.ui.credits.copyright_label.setText("The total amount：{}".format(len(paths)))
+            self.ui.credits.person.setText("Character name：")
             self.ui.credits.person_name.setText(name)
             self.ui.credits.person_name.setFocusPolicy(Qt.NoFocus)
             self.ui.credits.person_name.setReadOnly(True)
-            self.ui.credits.image.setText("图片名：")
+            self.ui.credits.image.setText("Picture name：")
             self.ui.credits.image_title.setText("")
 
         self.scrollArea_2_layout.addWidget(image_page)
@@ -499,7 +499,7 @@ class MainFunctions():
         # ADD Confirm Button
         ########################################################################
         if not self.has_searched:
-            self.ui.credits.copyright_label.setText("还未进行自然语言查找")
+            self.ui.credits.copyright_label.setText("No natural language lookup yet")
             self.ui.credits.person.setText("")
             self.ui.credits.person_name.setText("")
             self.ui.credits.person_name.setFocusPolicy(Qt.NoFocus)
@@ -508,7 +508,7 @@ class MainFunctions():
             self.ui.credits.image_title.setText("")
             return None
         else:            
-            self.ui.credits.copyright_label.setText("正在加载图片")
+            self.ui.credits.copyright_label.setText("loading image...")
             self.ui.credits.person.setText("")
             self.ui.credits.person_name.setText("")
             self.ui.credits.person_name.setFocusPolicy(Qt.NoFocus)
@@ -572,7 +572,7 @@ class MainFunctions():
                 print(image)
             """
         except AttributeError:
-            print("还未进行自然语言查找")
+            print("No natural language lookup yet")
             return None
 
     def load_duplicate_result(self):
@@ -580,7 +580,7 @@ class MainFunctions():
         # ADD Confirm Button
         ########################################################################
         if not self.found_duplicate_image:
-            self.ui.credits.copyright_label.setText("还未进行相似性筛查")
+            self.ui.credits.copyright_label.setText("Similarity screening not yet performed")
             self.ui.credits.person.setText("")
             self.ui.credits.person_name.setText("")
             self.ui.credits.person_name.setFocusPolicy(Qt.NoFocus)
@@ -589,7 +589,7 @@ class MainFunctions():
             self.ui.credits.image_title.setText("")
             return None
         else:            
-            self.ui.credits.copyright_label.setText("正在加载图片")
+            self.ui.credits.copyright_label.setText("loading image")
             self.ui.credits.person.setText("")
             self.ui.credits.person_name.setText("")
             self.ui.credits.person_name.setFocusPolicy(Qt.NoFocus)
@@ -599,7 +599,7 @@ class MainFunctions():
             QApplication.processEvents()
 
             if len(self.image_pages) != 0:
-                self.ui.credits.copyright_label.setText("选择要删除的图片并点击确定")
+                self.ui.credits.copyright_label.setText("Select the pictures to delete and click OK")
                 return None
 
         """"""
@@ -610,7 +610,7 @@ class MainFunctions():
             pass
         
         self.commit_delete_button = PyPushButton(
-            text = '确定',
+            text = 'OK',
             radius = 8,
             color = self.themes['app_color']['white'],
             bg_color = self.themes['app_color']['dark_one'],
@@ -655,9 +655,9 @@ class MainFunctions():
                 print(image)
             """
         except AttributeError:
-            print("还未进行相似筛查")
+            print("Similar screening has not yet been performed")
             return None
-        self.ui.credits.copyright_label.setText("选择要删除的图片并点击确定")
+        self.ui.credits.copyright_label.setText("Select the pictures to delete and click OK")
 
 
     def get_reserved_images(self):
@@ -747,12 +747,12 @@ class MainFunctions():
     def exec_edit_group_name(self):
         btn = self.person_group.checkedButton()
         input_dialog = QInputDialog(self)
-        new_name, ok = input_dialog.getText(self, "更改名称", "New Name:")
+        new_name, ok = input_dialog.getText(self, "Change name", "New Name:")
         if ok:
             self.persons = edit_group_name(new_name, btn.text(), get_persons('output.json'))
             write_json(self.persons)
             MainFunctions.load_persons(self)
-            if new_name != "错误分类":
+            if new_name != "Misclassification":
                 MainFunctions.update_image_count(self, len(self.persons[new_name]))
                 MainFunctions.load_image_page(self,name = new_name, paths=self.persons[new_name])
             QApplication.processEvents()
