@@ -18,4 +18,5 @@ we have made an application named `XML` to help people classify pictures, recogn
 ## Natural language search
 ![image](https://github.com/Seandaytoy1005/Private-Smart-Album/blob/main/search.gif)
 ## Duplicate check
+![GIF 2022-12-21 0-03-39](https://user-images.githubusercontent.com/103398011/208713193-659b3ea8-ad1e-4533-a406-cb1dc17ec688.gif)
 
