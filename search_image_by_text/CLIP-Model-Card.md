@@ -1,16 +1,45 @@
 # Model Card: CLIP
 
 
-## Model Details
+## Model Introduction
 
 CLIP is a multimodal model based on contrastive learning. Unlike some contrastive learning methods in CV such as moco and simclr, the training data of CLIP is a text-image pair: an image and its corresponding text description, here It is hoped that through contrastive learning, the model can learn the matching relationship between text-image pairs.
 ## How CLIP works
 
-
 CLIP authors report that they assembled a dataset of 400 million (image, text) pairs from the Internet. The model will take an image as an input and predict text as an output.
 ![image](https://user-images.githubusercontent.com/105193758/208596230-178da618-adfe-44ae-8ff6-b16c8b18efce.png)
+## Model principle
+### Pre-train
+![image](https://user-images.githubusercontent.com/105193758/208637163-3826a2a7-c786-4576-88e6-7fc062cda6d5.png)
 
-### Model Type
+The model architecture is divided into two parts, image encoder and text encoder.Here, the extracted text features and image features are compared and learned. For a training batch containing N text-image pairs, combining N text features and N image features in pairs, the CLIP model will predict the similarity of N^2 possible text-image pairs
+
+### The corresponding pseudocode implementation is as follows:
+     #image_encoder - ResNet or Vision Transformer
+     #text_encoder - CBOW or Text Transformer
+     #I[n, h, w, c] - minibatch of aligned images
+     #T[n, l] - minibatch of aligned texts
+     #W_i[d_i, d_e] - learned proj of image to embed
+     #W_t[d_t, d_e] - learned proj of text to embed
+     #t - learned temperature parameter
+
+     #分别提取图像特征和文本特征
+     I_f = image_encoder(I) #[n, d_i]
+     T_f = text_encoder(T) #[n, d_t]
+
+     #对两个特征进行线性投射，得到相同维度的特征，并进行l2归一化
+     I_e = l2_normalize(np.dot(I_f, W_i), axis=1)
+     T_e = l2_normalize(np.dot(T_f, W_t), axis=1)
+
+     #计算缩放的余弦相似度：[n, n]
+     logits = np.dot(I_e, T_e.T) * np.exp(t)
+
+     #对称的对比学习损失：等价于N个类别的cross_entropy_loss
+     labels = np.arange(n) # 对角线元素的labels
+     loss_i = cross_entropy_loss(logits, labels, axis=0)
+     loss_t = cross_entropy_loss(logits, labels, axis=1)
+     loss = (loss_i + loss_t)/2<br>
+
 
 Please see the paper linked below for further details about their specification.
 
