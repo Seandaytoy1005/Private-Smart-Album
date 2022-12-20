@@ -13,12 +13,12 @@ we have made an application named `XML` to help people classify pictures, recogn
     python main.py
     
     
-## Classification
+## Classification demo：
 ![image](https://github.com/Seandaytoy1005/Private-Smart-Album/blob/main/sort.gif)
-## Face classification
+## Face classification demo：
 ![image](https://github.com/Seandaytoy1005/Private-Smart-Album/blob/main/facesort.gif)
-## Natural language search
+## Natural language search demo：
 ![image](https://github.com/Seandaytoy1005/Private-Smart-Album/blob/main/search.gif)
-## Duplicate check
+## Duplicate check demo：
 ![GIF 2022-12-21 0-03-39](https://user-images.githubusercontent.com/103398011/208713193-659b3ea8-ad1e-4533-a406-cb1dc17ec688.gif)
 
