@@ -13,6 +13,8 @@ we have made an application named `XML` to help people classify pictures, recogn
     
     
 ## Classification
+### Face classification
+![image](https://github.com/Seandaytoy1005/Private-Smart-Album/blob/main/facesort.gif)
 ## Natural language search
 ![image](https://github.com/Seandaytoy1005/Private-Smart-Album/blob/main/search.gif)
 ## Duplicate check
