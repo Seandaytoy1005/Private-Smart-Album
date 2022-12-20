@@ -4,15 +4,17 @@
 ## Model Introduction
 
 CLIP is a multimodal model based on contrastive learning. Unlike some contrastive learning methods in CV such as moco and simclr, the training data of CLIP is a text-image pair: an image and its corresponding text description, here It is hoped that through contrastive learning, the model can learn the matching relationship between text-image pairs.
-## How CLIP works
 
-CLIP authors report that they assembled a dataset of 400 million (image, text) pairs from the Internet. The model will take an image as an input and predict text as an output.
-![image](https://user-images.githubusercontent.com/105193758/208596230-178da618-adfe-44ae-8ff6-b16c8b18efce.png)
 ## Model principle
 ### Pre-train
 ![image](https://user-images.githubusercontent.com/105193758/208637163-3826a2a7-c786-4576-88e6-7fc062cda6d5.png)
 
-The model architecture is divided into two parts, image encoder and text encoder.Here, the extracted text features and image features are compared and learned. For a training batch containing N text-image pairs, combining N text features and N image features in pairs, the CLIP model will predict the similarity of N^2 possible text-image pairs
+- The model architecture is divided into two parts, image encoder and text encoder.Here, the extracted text features and image features are compared and learned. For a training batch containing N text-image pairs, combining N text features and N image features in pairs, the CLIP model will predict the similarity of N^2 possible text-image pairs
+- The similarity here directly calculates the cosine similarity of text features and image features. Note that the cosine similarity of text features and image features is calculated using text cls_token and image cls_token (cosine similarity)
+The matrix shown above
+- There are a total of N positive samples, that is, text and images that really belong to a pair (diagonal elements in the matrix), while the remaining N2-N** text-image pairs are negative samples
+- The training goal of CLIP is to maximize the similarity of N positive samples while minimizing the similarity of the remaining negative samples.
+
 
 ### The corresponding pseudocode implementation is as follows:
      #image_encoder - ResNet or Vision Transformer
@@ -23,94 +25,40 @@ The model architecture is divided into two parts, image encoder and text encoder
      #W_t[d_t, d_e] - learned proj of text to embed
      #t - learned temperature parameter
 
-     #分别提取图像特征和文本特征
+     #Extract image features and text features separately
      I_f = image_encoder(I) #[n, d_i]
      T_f = text_encoder(T) #[n, d_t]
 
-     #对两个特征进行线性投射，得到相同维度的特征，并进行l2归一化
+     #Perform linear projection on two features to obtain features of the same dimension, and perform l2 normalization
      I_e = l2_normalize(np.dot(I_f, W_i), axis=1)
      T_e = l2_normalize(np.dot(T_f, W_t), axis=1)
 
-     #计算缩放的余弦相似度：[n, n]
+     #Compute scaled cosine similarity: [n, n]
      logits = np.dot(I_e, T_e.T) * np.exp(t)
 
-     #对称的对比学习损失：等价于N个类别的cross_entropy_loss
-     labels = np.arange(n) # 对角线元素的labels
+     #Symmetric contrastive learning loss: equivalent to cross_entropy_loss of N categories
+     labels = np.arange(n) # labels for diagonal elements
      loss_i = cross_entropy_loss(logits, labels, axis=0)
      loss_t = cross_entropy_loss(logits, labels, axis=1)
      loss = (loss_i + loss_t)/2<br>
 
 
-Please see the paper linked below for further details about their specification.
-
-#### Documents
-
-- [Blog Post](https://openai.com/blog/clip/)
-- [CLIP Paper](https://arxiv.org/abs/2103.00020)
 
 
 
-## Model Use
+## Model Usege:
+![image](https://user-images.githubusercontent.com/105193758/208666353-17d1f085-d007-4845-b50f-d3b85395e8ec.png)
+- Construct the description text of each category according to the classification label of the task: A photo of {label}, and then send these texts to the Text Encoder to obtain the corresponding text features. If the number of categories is N, then N text features will be obtained;
+- Send the image to be predicted to Image Encoder to obtain image features, and then calculate the scaled cosine similarity with N text features (consistent with the training process), and then select the category corresponding to the text with the largest similarity as the image classification prediction result, further, These similarities can be regarded as logits, and the predicted probability of each category can be obtained after being sent to softmax.
 
-### Intended Use
-
-The model is intended as a research output for research communities. We hope that this model will enable researchers to better understand and explore zero-shot, arbitrary image classification. We also hope it can be used for interdisciplinary studies of the potential impact of such models - the CLIP paper includes a discussion of potential downstream impacts to provide an example for this sort of analysis.
-
-#### Primary intended uses
-
-The primary intended users of these models are AI researchers.
-
-We primarily imagine the model will be used by researchers to better understand robustness, generalization, and other capabilities, biases, and constraints of computer vision models.
+## Some examples show:
+![image](https://user-images.githubusercontent.com/105193758/208669954-0fc4a326-9145-4716-8f8f-f2c36caee991.png)
 
 
-## Data
+## Limitations:
 
-The model was trained on publicly available image-caption data. This was done through a combination of crawling a handful of websites and using commonly-used pre-existing image datasets such as [YFCC100M](http://projects.dfki.uni-kl.de/yfcc100m/). A large portion of the data comes from our crawling of the internet. This means that the data is more representative of people and societies most connected to the internet which tend to skew towards more developed nations, and younger, male users.
-
-
-
-## Performance and Limitations
-
-### Performance
-
-We have evaluated the performance of CLIP on a wide range of benchmarks across a variety of computer vision datasets such as OCR to texture recognition to fine-grained classification. The paper describes model performance on the following datasets:
-
-- Food101
-- CIFAR10   
-- CIFAR100   
-- Birdsnap
-- SUN397
-- Stanford Cars
-- FGVC Aircraft
-- VOC2007
-- DTD
-- Oxford-IIIT Pet dataset
-- Caltech101
-- Flowers102
-- MNIST   
-- SVHN 
-- IIIT5K   
-- Hateful Memes   
-- SST-2
-- UCF101
-- Kinetics700
-- Country211
-- CLEVR Counting
-- KITTI Distance
-- STL-10
-- RareAct
-- Flickr30
-- MSCOCO
-- ImageNet
-- ImageNet-A
-- ImageNet-R
-- ImageNet Sketch
-- ObjectNet (ImageNet Overlap)
-- Youtube-BB
-- ImageNet-Vid
-
-## Limitations
-
-CLIP and our analysis of it have a number of limitations.
-CLIP currently struggles with respect to certain tasks such as fine grained classification and counting objects.
- Additionally, our approach to testing CLIP also has an important limitation- in many cases use linear probes to evaluate the performance of CLIP and there is evidence suggesting that linear probes can underestimate model performance.
+- While CLIP usually performs well on recognizing common objects, it struggles on more abstract or systematic tasks such as counting the number of objects in an image and on more complex tasks such as predicting how close the nearest car is in a photo. On these two datasets, zero-shot CLIP is only slightly better than random guessing. Zero-shot CLIP also struggles compared to task specific models on very fine-grained classification, such as telling the difference between car models, variants of aircraft, or flower species.
+- CLIP also still has poor generalization to images not covered in its pre-training dataset. For instance, although CLIP learns a capable OCR system, when evaluated on handwritten digits from the MNIST dataset, zero-shot CLIP only achieves 88% accuracy, well below the 99.75% of humans on the dataset. Finally, we’ve observed that CLIP’s zero-shot classifiers can be sensitive to wording or phrasing and sometimes require trial and error “prompt engineering” to perform well.
+## More information about clip
+- https://github.com/openai/CLIP
+- https://openai.com/blog/clip/
