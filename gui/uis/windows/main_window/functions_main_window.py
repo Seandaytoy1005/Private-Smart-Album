@@ -599,7 +599,7 @@ class MainFunctions():
             QApplication.processEvents()
 
             if len(self.image_pages) != 0:
-                self.ui.credits.copyright_label.setText("Select the pictures to delete and click OK")
+                self.ui.credits.copyright_label.setText("")
                 return None
 
         """"""
@@ -609,17 +609,17 @@ class MainFunctions():
         except AttributeError:
             pass
         
-        self.commit_delete_button = PyPushButton(
-            text = 'OK',
-            radius = 8,
-            color = self.themes['app_color']['white'],
-            bg_color = self.themes['app_color']['dark_one'],
-            bg_color_hover = self.themes['app_color']['orange'],
-            bg_color_pressed = self.themes['app_color']['orange']
-        )
-        self.commit_delete_button.setMinimumHeight(40)
-        self.ui.load_pages.page_5_layout.addWidget(self.commit_delete_button)
-        self.commit_delete_button.clicked.connect(lambda: MainFunctions.get_reserved_images(self))
+#         self.commit_delete_button = PyPushButton(
+#             text = 'OK',
+#             radius = 8,
+#             color = self.themes['app_color']['white'],
+#             bg_color = self.themes['app_color']['dark_one'],
+#             bg_color_hover = self.themes['app_color']['orange'],
+#             bg_color_pressed = self.themes['app_color']['orange']
+#         )
+#         self.commit_delete_button.setMinimumHeight(40)
+#         self.ui.load_pages.page_5_layout.addWidget(self.commit_delete_button)
+#         self.commit_delete_button.clicked.connect(lambda: MainFunctions.get_reserved_images(self))
 
         #########################################################################
         # ADD Pics
@@ -657,7 +657,7 @@ class MainFunctions():
         except AttributeError:
             print("Similar screening has not yet been performed")
             return None
-        self.ui.credits.copyright_label.setText("Select the pictures to delete and click OK")
+        self.ui.credits.copyright_label.setText("")
 
 
     def get_reserved_images(self):
