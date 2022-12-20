@@ -10,8 +10,7 @@ we have made an application named `XML` to help people classify pictures, recogn
 # Instructions:
     conda activate Xml
     python main.py
-Now you will see your private photo manipulation app interface!<br>Hope you like it！
--
+## 
 ![image](https://user-images.githubusercontent.com/105193758/208589831-83627a70-a542-46b8-9eae-9aceb9fa92e7.png)
 
 
